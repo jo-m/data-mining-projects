@@ -3,8 +3,8 @@
 reported_duplicates: mapper.py reducer.py data/training.txt
 	python mapper.py < data/training.txt \
 		| sort \
-		| head -n 10 \
-		| python reducer.py
+		| python reducer.py \
+		| tee reported_duplicates
 
 check: check.py reported_duplicates
 	python check.py reported_duplicates data/duplicates.txt

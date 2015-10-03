@@ -4,21 +4,21 @@ import numpy as np
 import sys
 
 n_h = 20
+max_val = 20000
 
-np.random.seed(seed=42)
-h_a = np.random.randint(20000, size=(n_h))
-h_b = np.random.randint(20000, size=(n_h))
+np.random.seed(seed=43)
+h_a = np.random.randint(1, max_val, size=(n_h))
+h_b = np.random.randint(1, max_val, size=(n_h))
 
-def h(n, i):
-    return (h_a[i] * n) % h_b[i]
+def h(n):
+    return np.mod(n * h_a, h_b)
 
 def process(id, shingles):
     M = np.empty((n_h))
     M[:] = np.inf
 
     for r in shingles:
-        for i in range(n_h):
-            M[i] = min(M[i], h(r, i))
+        M = np.minimum(M, h(r))
 
     key = str(list(M.astype(int)))
     print('%s\t%d' % (key, id))

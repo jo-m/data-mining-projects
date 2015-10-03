@@ -45,8 +45,13 @@ if tp + fn == 0:
 else:
     recall = 1.0 * tp / (tp + fn)
 
+def score(F, H=0.9, E=0.75):
+    return 0.5 + 0.5 * (1 - (H - F) / (H - E))
+
 if precision + recall == 0:
     print ("Both precision and recall are 0.")
 else:
     f1 = 2.0 * precision * recall / (precision + recall)
     print "Precision = %f, recall = %f, F1 = %f" % (precision, recall, f1)
+    print "Score = %f" % score(f1)
+    print "Grade = %.2f" % (1 + score(f1) * 5)

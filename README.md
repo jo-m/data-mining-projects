@@ -11,6 +11,3 @@ First, copy the two data txt files into `data/`.
 
     # run everything
     make run
-
-    # run and check results
-    make check

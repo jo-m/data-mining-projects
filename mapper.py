@@ -3,11 +3,11 @@
 import numpy as np
 import sys
 
-pycharm_mode = True
+pycharm_mode = False
 
 r = 20
 b = 10
-k = r * b
+k = r * b # number of hash functions
 
 n_shingles = 20000
 
@@ -16,7 +16,7 @@ h_a = np.random.randint(1, 500, size=(k))
 h_b = np.random.randint(1, 20000, size=(k))
 
 def h(n):
-    return np.mod(n * h_a, h_b)
+    return np.mod(n * h_a + h_b, n_shingles)
 
 h2_a = np.random.randint(1, 2000, size=(b, r))
 h2_b = np.random.randint(1, 1000, size=(b))
@@ -26,15 +26,15 @@ def h2(M):
     return np.mod(np.multiply(M, h2_a).sum(axis=1) + h2_b, 100000)
 
 def process(id, shingles):
-    one_hot = np.zeros((n_shingles))
-    one_hot[shingles] = 1
-
     M = np.empty((k))
     M[:] = np.inf
 
+    # hashing the shingles and produce the signature matrix
     for s in shingles:
-        M = np.minimum(M, h(s))
+        hashed_shingle = h(s)
+        M = np.minimum(M, hashed_shingle)
 
+    # hashing the signature matrix
     M = h2(M)
 
     for i, m in enumerate(M):

@@ -12,7 +12,7 @@ k = r * b # number of hash functions
 n_shingles = 20000
 
 np.random.seed(seed=42)
-h_a = np.random.randint(1, 500, size=(k))
+h_a = np.random.randint(1, 20000, size=(k))
 h_b = np.random.randint(1, 20000, size=(k))
 
 def h(n):
@@ -63,3 +63,4 @@ if __name__ == "__main__":
                 f.close()
     else:
         read_lines(sys.stdin)
+

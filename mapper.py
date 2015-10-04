@@ -5,8 +5,8 @@ import sys
 
 pycharm_mode = False
 
-r = 20
-b = 10
+r = 50
+b = 20
 k = r * b # number of hash functions
 
 n_shingles = 20000
@@ -25,7 +25,7 @@ def h2(M):
     M = M.reshape(b, r)
     return np.mod(np.multiply(M, h2_a).sum(axis=1) + h2_b, 100000)
 
-def process(id, shingles):
+def process(video_id, shingles):
     M = np.empty((k))
     M[:] = np.inf
 
@@ -37,11 +37,12 @@ def process(id, shingles):
     # hashing the signature matrix
     M = h2(M)
 
-    for i, m in enumerate(M):
-        print "%03d %06d\t%d" % (i, m, id)
+    for band, hash_bucket in enumerate(M):
+        print "1\t%03d %06d %d" % (band, hash_bucket, video_id) # 1 because all to the same reduce
     #
     # key = str(list(M.astype(int)))
     # print('%s\t%d' % (key, id))
+
 
 def read_lines(source):
     for line in source:
@@ -62,4 +63,3 @@ if __name__ == "__main__":
                 f.close()
     else:
         read_lines(sys.stdin)
-

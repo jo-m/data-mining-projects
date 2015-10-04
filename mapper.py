@@ -3,9 +3,13 @@
 import numpy as np
 import sys
 
+pycharm_mode = True
+
 r = 20
 b = 10
 k = r * b
+
+n_shingles = 20000
 
 np.random.seed(seed=42)
 h_a = np.random.randint(1, 500, size=(k))
@@ -22,6 +26,9 @@ def h2(M):
     return np.mod(np.multiply(M, h2_a).sum(axis=1) + h2_b, 100000)
 
 def process(id, shingles):
+    one_hot = np.zeros((n_shingles))
+    one_hot[shingles] = 1
+
     M = np.empty((k))
     M[:] = np.inf
 
@@ -36,8 +43,23 @@ def process(id, shingles):
     # key = str(list(M.astype(int)))
     # print('%s\t%d' % (key, id))
 
-for line in sys.stdin:
-    line = line.strip()
-    video_id = int(line[6:15])
-    shingles = np.fromstring(line[16:], sep=" ").astype(int)
-    process(video_id, shingles)
+def read_lines(source):
+    for line in source:
+        line = line.strip()
+        video_id = int(line[6:15])
+        shingles = np.fromstring(line[16:], sep=" ").astype(int)
+        process(video_id, shingles)
+
+if __name__ == "__main__":
+    if pycharm_mode:
+        import argparse
+        parser = argparse.ArgumentParser()
+        parser.add_argument("filename", help="The filename to be processed")
+        args = parser.parse_args()
+        if args.filename:
+            with open(args.filename) as f:
+                read_lines(f)
+                f.close()
+    else:
+        read_lines(sys.stdin)
+

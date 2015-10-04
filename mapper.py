@@ -12,18 +12,18 @@ k = r * b # number of hash functions
 n_shingles = 20000
 
 np.random.seed(seed=42)
-h_a = np.random.randint(1, 500, size=(k))
+h_a = np.random.randint(1, 20000, size=(k))
 h_b = np.random.randint(1, 20000, size=(k))
 
 def h(n):
     return np.mod(n * h_a + h_b, n_shingles)
 
-h2_a = np.random.randint(1, 2000, size=(b, r))
-h2_b = np.random.randint(1, 1000, size=(b))
+h2_a = np.random.randint(1, 20000, size=(b, r))
+h2_b = np.random.randint(1, 20000, size=(b))
 
 def h2(M):
     M = M.reshape(b, r)
-    return np.mod(np.multiply(M, h2_a).sum(axis=1) + h2_b, 100000)
+    return np.mod(np.multiply(M, h2_a).sum(axis=1) + h2_b, n_shingles)
 
 def process(id, shingles):
     M = np.empty((k))
@@ -39,9 +39,6 @@ def process(id, shingles):
 
     for i, m in enumerate(M):
         print "%03d %06d\t%d" % (i, m, id)
-    #
-    # key = str(list(M.astype(int)))
-    # print('%s\t%d' % (key, id))
 
 def read_lines(source):
     for line in source:
@@ -62,4 +59,3 @@ if __name__ == "__main__":
                 f.close()
     else:
         read_lines(sys.stdin)
-

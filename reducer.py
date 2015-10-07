@@ -39,37 +39,51 @@ def process(source):
 
     for line in source:
         line = line.strip()
-        key, band, hash_bucket, video_id, shingles = line.split("\t")
+        key, band, hash_bucket, current_video_id, shingles = line.split("\t")
         band = int(band)
         hash_bucket = int(hash_bucket)
-        video_id = int(video_id)
+        current_video_id = int(current_video_id)
         shingles = ast.literal_eval(shingles)
 
         if last_band is None:
             last_band = band
 
         if current_band != band:
-            candidate_pairs[current_band] = []
-            for videos in hash_map.itervalues():
-                if len(videos) >= 2:
-                    candidate_pairs[current_band] += [videos]
+            #candidate_pairs[current_band] = []
+            #for videos in hash_map.itervalues():
+            #    if len(videos) >= 2:
+            #        candidate_pairs[current_band] += [videos]
             hash_map = {}
             current_band = band
 
         if hash_bucket not in hash_map:
             hash_map[hash_bucket] = []
 
-        hash_map[hash_bucket] += [video_id]
+
+        video = {}
+        video['id'] = current_video_id
+        video['s'] = shingles
+
+        if len(hash_map[hash_bucket]) != 0:
+            # calc jaccard distance
+            for video in hash_map[hash_bucket]:
+                jd = jaccard_d(video['s'], shingles)
+                dup_pair = sorted((video['id'], current_video_id))
+                if jd >= 0.9 and dup_pair not in duplicates:
+                    duplicates.append(dup_pair)
+
+        hash_map[hash_bucket] += [video]
+
 
     # process last band
-    candidate_pairs[current_band] = []
-    for videos in hash_map.itervalues():
-        if len(videos) >= 2:
-            candidate_pairs[current_band] += [videos]
-
-    for pairs in candidate_pairs.itervalues():
-        for pair in pairs:
-            duplicates.append((pair[0], pair[1]))
+    # candidate_pairs[current_band] = []
+    # for videos in hash_map.itervalues():
+    #     if len(videos) >= 2:
+    #         candidate_pairs[current_band] += [videos]
+    #
+    # for pairs in candidate_pairs.itervalues():
+    #     for pair in pairs:
+    #         duplicates.append((pair[0], pair[1]))
 
     if len(duplicates) > 0:
         my_print(duplicates)

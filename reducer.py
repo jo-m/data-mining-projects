@@ -2,6 +2,7 @@
 
 import numpy as np
 import sys
+import ast
 
 
 pycharm_mode = False
@@ -20,6 +21,14 @@ def my_print(videos):
         print "%d\t%d" % (pair[0], pair[1])
 
 
+def jaccard_sim(A, B):
+    return float(np.setdiff1d(A, B).size) / np.union1d(A, B).size
+
+
+def jaccard_d(A, B):
+    return 1 - jaccard_sim(A, B)
+
+
 def process(source):
     last_band = None
     key_count = 0
@@ -30,11 +39,11 @@ def process(source):
 
     for line in source:
         line = line.strip()
-        key, value = line.split("\t")
-        band, hash_bucket, video_id = value.split(" ")
+        key, band, hash_bucket, video_id, shingles = line.split("\t")
         band = int(band)
         hash_bucket = int(hash_bucket)
         video_id = int(video_id)
+        shingles = ast.literal_eval(shingles)
 
         if last_band is None:
             last_band = band

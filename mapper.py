@@ -18,8 +18,8 @@ h_b = np.random.randint(1, 20000, size=(k))
 def h(n):
     return np.mod(n * h_a + h_b, n_shingles)
 
-h2_a = np.random.randint(1, 2000, size=(b, r))
-h2_b = np.random.randint(1, 1000, size=(b))
+h2_a = np.random.randint(1, 20000, size=(b, r))
+h2_b = np.random.randint(1, 20000, size=(b))
 
 def h2(M):
     M = M.reshape(b, r)
@@ -38,7 +38,7 @@ def process(video_id, shingles):
     M = h2(M)
 
     for band, hash_bucket in enumerate(M):
-        print "1\t%03d %06d %d" % (band, hash_bucket, video_id) # 1 because all to the same reduce
+        print "1\t%03d\t%06d\t%d\t%s" % (band, hash_bucket, video_id, shingles.tolist()) # 1 because all to the same reduce
     #
     # key = str(list(M.astype(int)))
     # print('%s\t%d' % (key, id))

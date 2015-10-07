@@ -31,18 +31,18 @@ def jaccard_d(A, B):
 
 def process(source):
     last_band = None
-    key_count = 0
     duplicates = []
+    non_duplicates = []
     candidate_pairs = {}
     hash_map = {}
     current_band = 0
 
     for line in source:
         line = line.strip()
-        key, band, hash_bucket, video_id, shingles = line.split("\t")
+        key, band, hash_bucket, current_video_id, shingles = line.split("\t")
         band = int(band)
         hash_bucket = int(hash_bucket)
-        video_id = int(video_id)
+        current_video_id = int(current_video_id)
         shingles = ast.literal_eval(shingles)
 
         if last_band is None:
@@ -59,21 +59,38 @@ def process(source):
         if hash_bucket not in hash_map:
             hash_map[hash_bucket] = []
 
-        hash_map[hash_bucket] += [video_id]
+        if len(hash_map[hash_bucket]) != 0:
+            # calc jaccard distance
+            for v in hash_map[hash_bucket]:
+                cand_pair = sorted((v['id'], current_video_id))
+
+                if cand_pair not in non_duplicates:
+                    jd = jaccard_d(v['s'], shingles)
+
+                    if jd >= 0.9:
+                        if cand_pair not in duplicates:
+                            duplicates.append(cand_pair)
+                    else:
+                        non_duplicates.append(cand_pair)
+
+        video = {}
+        video['id'] = current_video_id
+        video['s'] = shingles
+        hash_map[hash_bucket] += [video]
+
 
     # process last band
-    candidate_pairs[current_band] = []
-    for videos in hash_map.itervalues():
-        if len(videos) >= 2:
-            candidate_pairs[current_band] += [videos]
-
-    for pairs in candidate_pairs.itervalues():
-        for pair in pairs:
-            duplicates.append((pair[0], pair[1]))
+    # candidate_pairs[current_band] = []
+    # for videos in hash_map.itervalues():
+    #     if len(videos) >= 2:
+    #         candidate_pairs[current_band] += [videos]
+    #
+    # for pairs in candidate_pairs.itervalues():
+    #     for pair in pairs:
+    #         duplicates.append((pair[0], pair[1]))
 
     if len(duplicates) > 0:
         my_print(duplicates)
-        #print_duplicates(duplicates)
 
 if __name__ == "__main__":
     if pycharm_mode:

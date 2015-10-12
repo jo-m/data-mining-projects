@@ -25,7 +25,12 @@ def h2(M):
     M = M.reshape(b, r)
     return np.mod(np.multiply(M, h2_a).sum(axis=1) + h2_b, 15485863)
 
-def process(video_id, shingles):
+def iter_2comb(l):
+    for i, a in enumerate(l):
+        for b in l[i+1:]:
+            yield a, b
+
+def process(id, shingles):
     M = np.empty((k))
     M[:] = np.inf
 
@@ -37,12 +42,10 @@ def process(video_id, shingles):
     # hashing the signature for this video
     M = h2(M)
 
-    for band, hash_bucket in enumerate(M):
-        print "%03d %06d\t%d\t%s" % (band, hash_bucket, video_id, shingles.tolist())
-    #
-    # key = str(list(M.astype(int)))
-    # print('%s\t%d' % (key, id))
-
+    for a, b in iter_2comb(list(enumerate(M))):
+        if a[1] > b[1]:
+            a, b = b, a
+            print "%03d %06d %03d %06d\t%d" % (a[0], b[0], a[1], b[1], id)
 
 def read_lines(source):
     for line in source:
@@ -63,4 +66,3 @@ if __name__ == "__main__":
                 f.close()
     else:
         read_lines(sys.stdin)
-

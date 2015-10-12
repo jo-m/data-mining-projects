@@ -5,11 +5,13 @@ import sys
 
 pycharm_mode = False
 
-r = 50
-b = 20
+r = 20
+b = 30
 k = r * b # number of hash functions
 
 n_shingles = 20000
+
+large_prime = 15485863
 
 np.random.seed(seed=42)
 h_a = np.random.randint(1, 20000, size=(k))
@@ -23,9 +25,12 @@ h2_b = np.random.randint(1, 20000, size=(b))
 
 def h2(M):
     M = M.reshape(b, r)
-    return np.mod(np.multiply(M, h2_a).sum(axis=1) + h2_b, 15485863)
+    return np.mod(np.multiply(M, h2_a).sum(axis=1) + h2_b, large_prime)
 
 def iter_2comb(l):
+    """
+    :param l: list of tuples (band, bucket)
+    """
     for i, a in enumerate(l):
         for b in l[i+1:]:
             yield a, b
@@ -42,10 +47,12 @@ def process(id, shingles):
     # hashing the signature for this video
     M = h2(M)
 
-    for a, b in iter_2comb(list(enumerate(M))):
-        if a[1] > b[1]:
-            a, b = b, a
-            print "%03d %06d %03d %06d\t%d" % (a[0], b[0], a[1], b[1], id)
+    # loop over all (band, bucket) in M and their successors
+    for (band, bucket), (succ_band, succ_bucket) in iter_2comb(list(enumerate(M))):
+        if bucket > succ_bucket:
+            (band, bucket), (succ_band, succ_bucket) = (succ_band, succ_bucket), (band, bucket)
+
+        print "%03d %06d %03d %06d\t%d" % (band, bucket, succ_band, succ_bucket, id)
 
 def read_lines(source):
     for line in source:

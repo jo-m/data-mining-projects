@@ -7,14 +7,7 @@ import itertools
 
 pycharm_mode = False
 
-
-def print_duplicates(videos):
-    unique = np.unique(videos)
-    for i in xrange(len(unique)):
-        for j in xrange(i + 1, len(unique)):
-            print "%d\t%d" % (min(unique[i], unique[j]),
-                              max(unique[i], unique[j]))
-
+matching_bands = 6
 
 def my_print(videos):
     for pair in videos:
@@ -30,62 +23,40 @@ def jaccard_d(A, B):
 
 
 def process(source):
-    last_band = None
     duplicates = []
-    non_duplicates = []
     candidate_pairs = {}
-    hash_map = {}
-    current_band = 0
-    shingle_map = {}
 
     for line in source:
         line = line.strip()
-        key, current_video_id, shingles = line.split("\t")
-        band, hash_bucket = key.split(" ")
+        key, current_video_id = line.split("\t")
+        band, bucket, succ_band, succ_bucket = key.split(" ") # bucket <= succ_bucket
         band = int(band)
-        hash_bucket = int(hash_bucket)
+        bucket = int(bucket)
+        succ_band = int(succ_band)
+        succ_bucket = int(succ_bucket)
         current_video_id = int(current_video_id)
-        shingles = ast.literal_eval(shingles)
 
-        if last_band is None:
-            last_band = band
+        if band not in candidate_pairs:
+            candidate_pairs[band] = {}
 
-        if current_band != band:
-            candidate_pairs[current_band] = []
-            for videos in hash_map.itervalues():
-                if len(videos) >= 2:
-                    candidate_pairs[current_band] += [videos]
-            hash_map = {}
-            current_band = band
-            shingle_map = {}
+        if succ_band not in candidate_pairs:
+            candidate_pairs[succ_band] = {}
 
-        if hash_bucket not in hash_map:
-            hash_map[hash_bucket] = []
+        if bucket not in candidate_pairs[band]:
+            candidate_pairs[band][bucket] = []
 
-        # if len(hash_map[hash_bucket]) != 0:
-        #     # calc jaccard distance
-        #     for v_id in hash_map[hash_bucket]:
-        #         cand_pair = sorted((v_id, current_video_id))
-        #
-        #         if cand_pair not in non_duplicates and cand_pair not in duplicates:
-        #             jd = jaccard_d(shingle_map[v_id], shingles)
-        #
-        #             if jd >= 0.9:
-        #                 duplicates.append(cand_pair)
-        #             else:
-        #                 non_duplicates.append(cand_pair)
+        if succ_bucket not in candidate_pairs[succ_band]:
+            candidate_pairs[succ_band][succ_bucket] = []
 
-        hash_map[hash_bucket] += [current_video_id]
-        #shingle_map[current_video_id] = shingles
+        if current_video_id not in candidate_pairs[band][bucket]:
+            candidate_pairs[band][bucket] += [current_video_id]
 
-    # process last band
-    candidate_pairs[current_band] = []
-    for videos in hash_map.itervalues():
-        if len(videos) >= 2:
-            candidate_pairs[current_band] += [videos]
+        if current_video_id not in candidate_pairs[succ_band][succ_bucket]:
+            candidate_pairs[succ_band][succ_bucket] += [current_video_id]
 
     pair_hm = {}
-    cp_processed = [tuple(t) for sublist in candidate_pairs.itervalues() for t in sublist] # flatten
+    cp_processed = [videos for band_hm in candidate_pairs.itervalues() for videos in band_hm.itervalues() if len(videos)>=2] # flatten
+    cp_processed = [tuple(t) for t in cp_processed]
     cp_processed = [list(itertools.combinations(t, 2)) for t in cp_processed] # combine all 2 pairs
     cp_processed = [tuple(sorted(t)) for sublist in cp_processed for t in sublist] # flatten
     for pair in cp_processed:
@@ -95,7 +66,7 @@ def process(source):
         pair_hm[pair] += 1
 
     for pair, count in pair_hm.iteritems():
-        if count >= 1:
+        if count >= matching_bands:
             duplicates.append(pair)
 
     if len(duplicates) > 0:

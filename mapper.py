@@ -23,22 +23,22 @@ h2_b = np.random.randint(1, 20000, size=(b))
 
 def h2(M):
     M = M.reshape(b, r)
-    return np.mod(np.multiply(M, h2_a).sum(axis=1) + h2_b, 100000)
+    return np.mod(np.multiply(M, h2_a).sum(axis=1) + h2_b, 15485863)
 
 def process(video_id, shingles):
     M = np.empty((k))
     M[:] = np.inf
 
-    # hashing the shingles and produce the signature matrix
+    # hashing the shingles and produce the signature
     for s in shingles:
         hashed_shingle = h(s)
         M = np.minimum(M, hashed_shingle)
 
-    # hashing the signature matrix
+    # hashing the signature for this video
     M = h2(M)
 
     for band, hash_bucket in enumerate(M):
-        print "1\t%03d\t%06d\t%d\t%s" % (band, hash_bucket, video_id, shingles.tolist()) # 1 because all to the same reduce
+        print "%03d %06d\t%d\t%s" % (band, hash_bucket, video_id, shingles.tolist())
     #
     # key = str(list(M.astype(int)))
     # print('%s\t%d' % (key, id))

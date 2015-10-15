@@ -28,31 +28,23 @@ def process(source):
 
     for line in source:
         line = line.strip()
-        key, current_video_id = line.split("\t")
-        band, bucket, succ_band, succ_bucket = key.split(" ") # bucket <= succ_bucket
+        key, value = line.split("\t")
+        band, bucket = key.split(" ")
+        current_video_id, current_shingles = value.split("-")
         band = int(band)
         bucket = int(bucket)
-        succ_band = int(succ_band)
-        succ_bucket = int(succ_bucket)
         current_video_id = int(current_video_id)
+        current_shingles = ast.literal_eval(current_shingles)
 
         if band not in candidate_pairs:
             candidate_pairs[band] = {}
 
-        if succ_band not in candidate_pairs:
-            candidate_pairs[succ_band] = {}
-
         if bucket not in candidate_pairs[band]:
             candidate_pairs[band][bucket] = []
-
-        if succ_bucket not in candidate_pairs[succ_band]:
-            candidate_pairs[succ_band][succ_bucket] = []
 
         if current_video_id not in candidate_pairs[band][bucket]:
             candidate_pairs[band][bucket] += [current_video_id]
 
-        if current_video_id not in candidate_pairs[succ_band][succ_bucket]:
-            candidate_pairs[succ_band][succ_bucket] += [current_video_id]
 
     pair_hm = {}
     cp_processed = [videos for band_hm in candidate_pairs.itervalues() for videos in band_hm.itervalues() if len(videos)>=2] # flatten

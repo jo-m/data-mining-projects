@@ -47,12 +47,9 @@ def process(id, shingles):
     # hashing the signature for this video
     M = h2(M)
 
-    # loop over all (band, bucket) in M and their successors
-    for (band, bucket), (succ_band, succ_bucket) in iter_2comb(list(enumerate(M))):
-        if bucket > succ_bucket:
-            (band, bucket), (succ_band, succ_bucket) = (succ_band, succ_bucket), (band, bucket)
-
-        print "%03d %06d %03d %06d\t%d" % (band, bucket, succ_band, succ_bucket, id)
+    # loop over all (band, bucket) in M
+    for (band, bucket) in enumerate(M):
+        print "%03d %06d\t%d-%s" % (band, bucket, id, shingles.tolist())
 
 def read_lines(source):
     for line in source:

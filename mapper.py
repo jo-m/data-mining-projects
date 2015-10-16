@@ -55,7 +55,7 @@ def read_lines(source):
     for line in source:
         line = line.strip()
         video_id = int(line[6:15])
-        shingles = np.fromstring(line[16:], sep=" ").astype(int)
+        shingles = np.fromstring(line[16:], dtype=int, sep=" ")    # stored into array
         process(video_id, shingles)
 
 if __name__ == "__main__":

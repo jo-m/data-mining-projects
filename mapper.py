@@ -3,18 +3,22 @@
 import numpy as np
 import sys
 
-pycharm_mode = False
+pycharm_mode            = False
+dani_formatted_output   = True
+output_shingles         = False
 
+# compare slide-deck3 page 32 for selection of r and b.
 r = 20
 b = 30
 k = r * b # number of hash functions
 
 n_shingles = 20000
 
-large_prime = 15485863
+large_prime = 15485863  # shouldn't this number be smaller than n_shingles to hash to a smaller
+                        # amount of buckets than the amount of shingles?
 
 np.random.seed(seed=42)
-h_a = np.random.randint(1, 20000, size=(k))
+h_a = np.random.randint(1, 20000, size=(k))     # try smaller upper bound than 20000 later..
 h_b = np.random.randint(1, 20000, size=(k))
 
 def h(n):
@@ -27,29 +31,29 @@ def h2(M):
     M = M.reshape(b, r)
     return np.mod(np.multiply(M, h2_a).sum(axis=1) + h2_b, large_prime)
 
-def iter_2comb(l):
-    """
-    :param l: list of tuples (band, bucket)
-    """
-    for i, a in enumerate(l):
-        for b in l[i+1:]:
-            yield a, b
-
 def process(id, shingles):
     M = np.empty((k))
     M[:] = np.inf
 
     # hashing the shingles and produce the signature
+    # for reference: http://infolab.stanford.edu/~ullman/mmds/ch3.pdf
     for s in shingles:
-        hashed_shingle = h(s)
-        M = np.minimum(M, hashed_shingle)
+        hashed_shingle = h(s) 
+        # vector, each row contains the shingle hashed with one of the hashfuctins
+        M = np.minimum(M, hashed_shingle)   #update signature vector (k-dimensional)
 
     # hashing the signature for this video
-    M = h2(M)
+    M = h2(M).astype(int)   #update signature vector (b-dimensional now)
 
     # loop over all (band, bucket) in M
-    for (band, bucket) in enumerate(M):
-        print "%03d %06d\t%d-%s" % (band, bucket, id, shingles.tolist())
+    if dani_formatted_output: # id, buckets, shingles
+        s = str(id) + ' - ' + str(M.tolist()).strip('[]')
+        if output_shingles:
+	        s = s + ' - ' + str(shingles.tolist()).strip('[]')
+        print s.replace(',','')
+    else:
+	    for (band, bucket) in enumerate(M):
+	        print "%03d %06d\t%d-%s" % (band, bucket, id, shingles.tolist())
 
 def read_lines(source):
     for line in source:

@@ -7,7 +7,7 @@ run: mapper.py reducer.py data/training.txt
 	python check.py reported_duplicates data/duplicates.txt
 
 map: mapper.py data/training.txt
-	python mapper.py < data/training.txt
+	python mapper.py < data/training.txt | sort > mapped_out.txt
 
 run_para: mapper.py reducer.py data/training.txt
 	parallel --pipe python mapper.py < data/training.txt \

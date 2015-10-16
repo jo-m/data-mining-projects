@@ -28,27 +28,23 @@ def process(source):
 
     for line in source:
         line = line.strip()
-        video_id, buckets, shingles = line.split('-')
+        video_id, hashed_bands, shingles = line.split('-')
         video_id = int(video_id)
-        buckets=np.fromstring(buckets, dtype=int, sep=' ')
+        hashed_bands=np.fromstring(hashed_bands, dtype=int, sep=' ')
         shingles=np.fromstring(shingles, dtype=int, sep=' ')
 
-        # key, value = line.split("\t")
-        # band, bucket = key.split(" ")
-        # current_video_id, current_shingles = value.split("-")
-        # band = int(band)
-        # bucket = int(bucket)
-        # current_video_id = int(current_video_id)
-        # current_shingles = ast.literal_eval(current_shingles)
+        for (band, bucket) in enumerate(hashed_bands):
+            if band not in candidate_pairs:
+                candidate_pairs[band] = {}
 
-        # if band not in candidate_pairs:
-        #     candidate_pairs[band] = {}
+            if bucket not in candidate_pairs[band]:
+                candidate_pairs[band][bucket] = []
 
-        # if bucket not in candidate_pairs[band]:
-        #     candidate_pairs[band][bucket] = []
+            if video_id not in candidate_pairs[band][bucket]:
+                candidate_pairs[band][bucket] += [video_id]
 
-        # if current_video_id not in candidate_pairs[band][bucket]:
-        #     candidate_pairs[band][bucket] += [current_video_id]
+    print('hello')
+
 
 
     # pair_hm = {}

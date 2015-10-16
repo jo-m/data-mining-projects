@@ -5,7 +5,7 @@ import sys
 
 pycharm_mode            = False
 dani_formatted_output   = True
-output_shingles         = False
+output_shingles         = True
 
 # compare slide-deck3 page 32 for selection of r and b.
 r = 20

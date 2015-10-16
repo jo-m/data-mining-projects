@@ -9,6 +9,11 @@ run: mapper.py reducer.py data/training.txt
 map: mapper.py data/training.txt
 	python mapper.py < data/training.txt | sort > mapped_out.txt
 
+reduce: reducer.py mapped_out.txt
+	python reducer.py < mapped_out.txt > reported_duplicates.txt
+	python check.py reported_duplicates.txt data/duplicates.txt
+
+
 run_para: mapper.py reducer.py data/training.txt
 	parallel --pipe python mapper.py < data/training.txt \
 		| sort \

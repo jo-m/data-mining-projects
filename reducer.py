@@ -5,9 +5,9 @@ import sys
 import ast
 import itertools
 
-pycharm_mode = True
+pycharm_mode =      False
 
-matching_bands = 6
+matching_bands =    8
 
 def my_print(videos):
     for pair in videos:
@@ -23,47 +23,53 @@ def jaccard_d(A, B):
 
 
 def process(source):
-    duplicates = []
-    candidate_pairs = {}
+    duplicates = []         # list
+    candidate_pairs = {}    # dictionary
+    #   band 1 dictionary
+    #       bucket list
+    #           video_id_1, video_id_2, ...
 
     for line in source:
         line = line.strip()
-        video_id, hashed_bands, shingles = line.split('-')
-        video_id = int(video_id)
-        hashed_bands=np.fromstring(hashed_bands, dtype=int, sep=' ')
-        shingles=np.fromstring(shingles, dtype=int, sep=' ')
+        if line.count('-') is 2:
+            video_id, hashed_bands, shingles = line.split('-')
+            video_id = int(video_id)
+            hashed_bands=np.fromstring(hashed_bands, dtype=int, sep=' ')
+            shingles=np.fromstring(shingles, dtype=int, sep=' ')
+        else:
+            video_id, hashed_bands = line.split('-')
+            video_id = int(video_id)
+            hashed_bands=np.fromstring(hashed_bands, dtype=int, sep=' ')
 
         for (band, bucket) in enumerate(hashed_bands):
             if band not in candidate_pairs:
-                candidate_pairs[band] = {}
+                candidate_pairs[band] = {}  # dictionary as value of the candidate_pairs dictionary to the band key
 
             if bucket not in candidate_pairs[band]:
-                candidate_pairs[band][bucket] = []
+                candidate_pairs[band][bucket] = [] 
 
             if video_id not in candidate_pairs[band][bucket]:
                 candidate_pairs[band][bucket] += [video_id]
 
     print('hello')
 
+    pair_hm = {}
+    cp_processed = [videos for band_hm in candidate_pairs.itervalues() for videos in band_hm.itervalues() if len(videos)>=2] # flatten
+    cp_processed = [tuple(t) for t in cp_processed]
+    cp_processed = [list(itertools.combinations(t, 2)) for t in cp_processed] # combine all 2 pairs
+    cp_processed = [tuple(sorted(t)) for sublist in cp_processed for t in sublist] # flatten
+    for pair in cp_processed:
+        pair_hm[pair] = 0 # init
 
+    for pair in cp_processed:
+        pair_hm[pair] += 1
 
-    # pair_hm = {}
-    # cp_processed = [videos for band_hm in candidate_pairs.itervalues() for videos in band_hm.itervalues() if len(videos)>=2] # flatten
-    # cp_processed = [tuple(t) for t in cp_processed]
-    # cp_processed = [list(itertools.combinations(t, 2)) for t in cp_processed] # combine all 2 pairs
-    # cp_processed = [tuple(sorted(t)) for sublist in cp_processed for t in sublist] # flatten
-    # for pair in cp_processed:
-    #     pair_hm[pair] = 0 # init
+    for pair, count in pair_hm.iteritems():
+        if count >= matching_bands:
+            duplicates.append(pair)
 
-    # for pair in cp_processed:
-    #     pair_hm[pair] += 1
-
-    # for pair, count in pair_hm.iteritems():
-    #     if count >= matching_bands:
-    #         duplicates.append(pair)
-
-    # if len(duplicates) > 0:
-    #     my_print(duplicates)
+    if len(duplicates) > 0:
+        my_print(duplicates)
 
 if __name__ == "__main__":
     if pycharm_mode:

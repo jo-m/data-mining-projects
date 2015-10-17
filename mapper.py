@@ -5,27 +5,27 @@ import sys
 
 pycharm_mode            = False
 dani_formatted_output   = True
-output_shingles         = True
+output_shingles         = False
 
 # compare slide-deck3 page 32 for selection of r and b.
 r = 20
-b = 30
+b = 50
 k = r * b # number of hash functions
 
 n_shingles = 20000
 
-large_prime = 15485863  # shouldn't this number be smaller than n_shingles to hash to a smaller
+large_prime = 1533  # shouldn't this number be smaller than n_shingles to hash to a smaller
                         # amount of buckets than the amount of shingles?
 
 np.random.seed(seed=42)
-h_a = np.random.randint(1, 20000, size=(k))     # try smaller upper bound than 20000 later..
-h_b = np.random.randint(1, 20000, size=(k))
+h_a = np.random.randint(1, 2000, size=(k))     # try smaller upper bound than 20000 later..
+h_b = np.random.randint(1, 2000, size=(k))
 
 def h(n):
     return np.mod(n * h_a + h_b, n_shingles)
 
-h2_a = np.random.randint(1, 20000, size=(b, r))
-h2_b = np.random.randint(1, 20000, size=(b))
+h2_a = np.random.randint(1, 2000, size=(b, r))
+h2_b = np.random.randint(1, 2000, size=(b))
 
 def h2(M):
     M = M.reshape(b, r)

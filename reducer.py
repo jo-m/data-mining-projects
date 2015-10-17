@@ -7,7 +7,7 @@ import itertools
 
 pycharm_mode =      False
 
-matching_bands =    5
+matching_bands =    3
 matching_shingles =    230 # 230 in total
 
 def my_print(videos):

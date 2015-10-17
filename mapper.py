@@ -5,11 +5,11 @@ import sys
 
 pycharm_mode            = False
 dani_formatted_output   = True
-output_shingles         = False
+output_hashes           = True
 
 # compare slide-deck3 page 32 for selection of r and b.
 r = 20
-b = 55
+b = 50
 k = r * b # number of hash functions
 
 n_shingles = 20000
@@ -41,6 +41,7 @@ def process(id, shingles):
         hashed_shingle = h(s) 
         # vector, each row contains the shingle hashed with one of the hashfuctins
         M = np.minimum(M, hashed_shingle)   #update signature vector (k-dimensional)
+        H = M.astype(int)
 
     # hashing the signature for this video
     M = h2(M).astype(int)   #update signature vector (b-dimensional now)
@@ -48,8 +49,8 @@ def process(id, shingles):
     # loop over all (band, bucket) in M
     if dani_formatted_output: # id, buckets, shingles
         s = str(id) + ' - ' + str(M.tolist()).strip('[]')
-        if output_shingles:
-	        s = s + ' - ' + str(shingles.tolist()).strip('[]')
+        if output_hashes:
+	        s = s + ' - ' + str(H.tolist()).strip('[]')
         print s.replace(',','')
     else:
 	    for (band, bucket) in enumerate(M):

@@ -7,7 +7,8 @@ import itertools
 
 pycharm_mode =      False
 
-matching_bands =    8
+matching_bands =    4
+matching_hashes =    975
 
 def my_print(videos):
     for pair in videos:
@@ -29,16 +30,16 @@ def process(source):
     #       bucket list
     #           video_id_1, video_id_2, ...
 
-    all_vid_shingles = {}
+    all_vid_hashes = {}
 
     for line in source:
         line = line.strip()
-        if line.count('-') is 2:
-            video_id, hashed_bands, shingles = line.split('-')
+        if line.count('-') is 2: # this means we also have the original hash-values
+            video_id, hashed_bands, hashes = line.split('-')
             video_id = int(video_id)
             hashed_bands=np.fromstring(hashed_bands, dtype=int, sep=' ')
-            shingles=np.fromstring(shingles, dtype=int, sep=' ').tolist()
-            all_vid_shingles[video_id]=shingles
+            hashes=np.fromstring(hashes, dtype=int, sep=' ').tolist()
+            all_vid_hashes[video_id]=hashes
         else:
             video_id, hashed_bands = line.split('-')
             video_id = int(video_id)
@@ -67,9 +68,19 @@ def process(source):
     for pair in cp_processed:
         pair_hm[pair] += 1
 
+    num_list=[]
     for pair, count in pair_hm.iteritems():
         if count >= matching_bands:
-            duplicates.append(pair)
+            # check for false positives here
+            num_of_same_hashes = 0
+            for a in all_vid_hashes[pair[0]]:
+                if a in all_vid_hashes[pair[1]]:
+                    num_of_same_hashes += 1
+
+            num_list.append(num_of_same_hashes)
+            if num_of_same_hashes > matching_hashes:
+                duplicates.append(pair)
+    num_list.sort()
 
     if len(duplicates) > 0:
         my_print(duplicates)

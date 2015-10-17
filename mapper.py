@@ -5,7 +5,7 @@ import sys
 
 pycharm_mode            = False
 dani_formatted_output   = True
-output_hashes           = True
+output_shingles           = True
 
 # compare slide-deck3 page 32 for selection of r and b.
 r = 20
@@ -49,8 +49,8 @@ def process(id, shingles):
     # loop over all (band, bucket) in M
     if dani_formatted_output: # id, buckets, shingles
         s = str(id) + ' - ' + str(M.tolist()).strip('[]')
-        if output_hashes:
-	        s = s + ' - ' + str(H.tolist()).strip('[]')
+        if output_shingles:
+	        s = s + ' - ' + str(shingles.astype(int).tolist()).strip('[]')
         print s.replace(',','')
     else:
 	    for (band, bucket) in enumerate(M):

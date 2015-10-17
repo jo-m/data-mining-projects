@@ -29,13 +29,16 @@ def process(source):
     #       bucket list
     #           video_id_1, video_id_2, ...
 
+    all_vid_shingles = {}
+
     for line in source:
         line = line.strip()
         if line.count('-') is 2:
             video_id, hashed_bands, shingles = line.split('-')
             video_id = int(video_id)
             hashed_bands=np.fromstring(hashed_bands, dtype=int, sep=' ')
-            shingles=np.fromstring(shingles, dtype=int, sep=' ')
+            shingles=np.fromstring(shingles, dtype=int, sep=' ').tolist()
+            all_vid_shingles[video_id]=shingles
         else:
             video_id, hashed_bands = line.split('-')
             video_id = int(video_id)

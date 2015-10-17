@@ -9,23 +9,23 @@ output_shingles         = False
 
 # compare slide-deck3 page 32 for selection of r and b.
 r = 20
-b = 50
+b = 55
 k = r * b # number of hash functions
 
 n_shingles = 20000
 
-large_prime = 1024  # shouldn't this number be smaller than n_shingles to hash to a smaller
+large_prime = 1087 # shouldn't this number be smaller than n_shingles to hash to a smaller
                         # amount of buckets than the amount of shingles?
 
 np.random.seed(seed=42)
-h_a = np.random.randint(1, 2000, size=(k))     # try smaller upper bound than 20000 later..
-h_b = np.random.randint(1, 2000, size=(k))
+h_a = np.random.randint(1, 1087, size=(k))     # try smaller upper bound than 20000 later..
+h_b = np.random.randint(1, 1087, size=(k))
 
 def h(n):
     return np.mod(n * h_a + h_b, n_shingles)
 
-h2_a = np.random.randint(1, 2000, size=(b, r))
-h2_b = np.random.randint(1, 2000, size=(b))
+h2_a = np.random.randint(1, 1087, size=(b, r))
+h2_b = np.random.randint(1, 1087, size=(b))
 
 def h2(M):
     M = M.reshape(b, r)

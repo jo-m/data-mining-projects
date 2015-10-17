@@ -14,7 +14,7 @@ k = r * b # number of hash functions
 
 n_shingles = 20000
 
-large_prime = 1533  # shouldn't this number be smaller than n_shingles to hash to a smaller
+large_prime = 1024  # shouldn't this number be smaller than n_shingles to hash to a smaller
                         # amount of buckets than the amount of shingles?
 
 np.random.seed(seed=42)

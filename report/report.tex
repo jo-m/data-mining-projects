@@ -25,8 +25,13 @@
 \maketitle
 
 \section*{Approximate near-duplicate search using Locality Sensitive Hashing} 
-Briefly describe the steps used to produce the solution. Feel
-free to add plots or screenshots if you think it's necessary. The
-report should contain a maximum of 2 pages.
+Jonathan started out by hashing each shingle with $r * b$ generated hash functions. He then proceeded to create the signature column for that video by taking the minimum over all shingles. In a next step, Jonathan vectorized the code in order to make it more efficient.
+
+Jonathan also went on to create a function which hashes the signature column and returns the bucket for each band. The band and according bucket as well as  the video id and the shingles of that video were then emitted.
+
+For the first submission, Marco detected candidate pairs in the reducer, calculated the Jaccard distance and classified them as duplicates if the distance was big enough. This resulted in a score of 0.79.
+
+For submission two, he classified a candidate pair as duplicates, if they were hashed into the same buckets on six or more bands. With that approach, the achieved score was 0.88.
+
 
 \end{document} 

@@ -7,16 +7,13 @@ import itertools
 
 pycharm_mode =      False
 
-matching_bands =    3
-matching_shingles =    230 # 230 in total
-
 def my_print(videos):
     for pair in videos:
         print "%d\t%d" % (pair[0], pair[1])
 
 
 def jaccard_sim(A, B):
-    return float(np.setdiff1d(A, B).size) / np.union1d(A, B).size
+    return float(np.intersect1d(A, B).size) / np.union1d(A, B).size
 
 
 def jaccard_d(A, B):
@@ -68,19 +65,11 @@ def process(source):
     for pair in cp_processed:
         pair_hm[pair] += 1
 
-    num_list=[]
     for pair, count in pair_hm.iteritems():
-        if count >= matching_bands:
-            # check for false positives here
-            num_of_same_shingles = 0
-            for a in all_vid_shingles[pair[0]]:
-                if a in all_vid_shingles[pair[1]]:
-                    num_of_same_shingles += 1
-
-            num_list.append(num_of_same_shingles)
-            if num_of_same_shingles > matching_shingles:
-                duplicates.append(pair)
-    num_list.sort()
+        # check for false positives here
+        jd = jaccard_d(all_vid_shingles[pair[0]], all_vid_shingles[pair[1]])
+        if jd <= 0.1:
+            duplicates.append(pair)
 
     if len(duplicates) > 0:
         my_print(duplicates)

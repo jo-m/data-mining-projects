@@ -18,7 +18,7 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \title{Data Mining: Learning from Large Data Sets - Fall Semester 2015}
-\author{member1@student.ethz.ch\\ member2@student.ethz.ch\\ member3@student.ethz.ch\\}
+\author{jo@student.ethz.ch\\ umarco@student.ethz.ch\\ meiled@student.ethz.ch\\}
 \date{\today}
 
 \begin{document}
@@ -35,6 +35,11 @@ For the first submission, Marco detected candidate pairs in the reducer, calcula
 
 For submission two, he classified a candidate pair as duplicates, if they were hashed into the same buckets on six or more bands. With that approach, the achieved score was 0.88.
 
-** TODO Dani hier **
+Daniel first restructured the data output of the mapper for simplicity with the ability to output the video id including band-hashes and shingles in a compact way. By playing around with the random number range and the modulo-factor as well as tuning the number of bands in the hash-table we got the score up to 0.98 on the training data, but just 0.89 in submission 3.
+
+To get the score further up Daniel than tried to bring the false negatives down by classify videos as duplicates on a fairly low number of identical band-hashes, but than threw out the false positives by directly comparing all row-hashes. This did not really bring much progress, so we used the same concept, but compared the shingles directly to get the false-positives out. This lead to the semi-final submission with the score of 0.994.
+
+For our final submission Marco set the boundary even lower to just one similar bucket (band-hashes) and prettified the shingles comparison by reuse of the the Jaccard distance function he used earlier. Final submission score: 0.997.
+
 
 \end{document}

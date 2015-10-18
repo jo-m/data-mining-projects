@@ -24,14 +24,17 @@
 \begin{document}
 \maketitle
 
-\section*{Approximate near-duplicate search using Locality Sensitive Hashing} 
-Jonathan started out by hashing each shingle with $r * b$ generated hash functions. He then proceeded to create the signature column for that video by taking the minimum over all shingles. In a next step, Jonathan vectorized the code in order to make it more efficient.
+\section*{Approximate near-duplicate search using Locality Sensitive Hashing}
+We started by closely following the techniques and algorithms described in the lecture and tutorial sessions. As required, Python 2.7 and numpy were used.
+Jonathan started out by hashing each shingle with $r * b$ generated minhash functions. He then proceeded to create the signature column for that video by taking the minimum over all shingles.
+In the begin, everything was done in a loop and thus very inefficient. In a next step, the code was vectorized where possible using numpy in order to make it more efficient.
 
-Jonathan also went on to create a function which hashes the signature column and returns the bucket for each band. The band and according bucket as well as  the video id and the shingles of that video were then emitted.
+Jonathan also went on to create a function which hashes the signature column and returns the bucket for each band (band size $b$). The band and according bucket as well as the video id and the shingles of that video were then emitted.
 
 For the first submission, Marco detected candidate pairs in the reducer, calculated the Jaccard distance and classified them as duplicates if the distance was big enough. This resulted in a score of 0.79.
 
 For submission two, he classified a candidate pair as duplicates, if they were hashed into the same buckets on six or more bands. With that approach, the achieved score was 0.88.
 
+** TODO Dani hier **
 
-\end{document} 
+\end{document}

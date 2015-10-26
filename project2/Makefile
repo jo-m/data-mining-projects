@@ -12,4 +12,11 @@ data/weights.txt: reducer.py data/mapped_out.txt
 
 # only for testing
 map:
-	python mapper.py < data/training.txt | head -n 50
+	python mapper.py < data/training_sub.txt
+
+test:
+	python mapper.py < data/training_sub.txt \
+		| python reducer.py \
+		> data/weights_test.txt
+	python evaluate.py data/weights_test.txt \
+		visual_test/visual_test_set.csv visual_test/target.csv .

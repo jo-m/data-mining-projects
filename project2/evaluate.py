@@ -13,7 +13,6 @@ if __name__ == "__main__":
 
     # IMPORTANT: We must use the same feature transformation.
     sys.path.append(sys.argv[4])
-    print sys.path
     from mapper import transform
 
     with open(sys.argv[1], "r") as fp_weights:
@@ -38,7 +37,7 @@ if __name__ == "__main__":
                 x_original = np.fromstring(x_string, sep=' ')
 
                 # Transform the features.
-                x = transform(x_original).flatten()  
+                x = transform(x_original).flatten()
                 if not x.shape == weights.shape:
                     logging.error("Shapes of weight vector and transformed "
                                   "data don't match")

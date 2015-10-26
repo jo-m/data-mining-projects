@@ -10,10 +10,13 @@ CLASSES = (-1, +1)   # The classes that we are trying to predict.
 def transform(x_original):
     return x_original
 
-for line in sys.stdin:
-    line = line.strip()
-    (label, x_string) = line.split(" ", 1)
-    label = int(label)
-    x_original = np.fromstring(x_string, sep=' ')
-    x = transform(x_original)  # Use our features.
-    
+def main():
+    for line in sys.stdin:
+        line = line.strip()
+        (label, x_string) = line.split(" ", 1)
+        label = int(label)
+        x_original = np.fromstring(x_string, sep=' ')
+        x = transform(x_original)  # Use our features.
+
+if __name__ == '__main__':
+    main()

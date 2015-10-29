@@ -28,10 +28,12 @@ def main():
         X = np.vstack([x[1] for x in m])
         Y = np.array([x[0] for x in m]).T
 
-        clf = LinearSVC(dual=False, fit_intercept=False)
+        clf = LinearSVC(
+            fit_intercept=False,
+            loss='hinge'
+        )
         clf.fit(X, Y)
         np.savetxt(sys.stdout, clf.coef_)
 
 if __name__ == '__main__':
-    sys.stderr.write('Started a python process\n')
     main()

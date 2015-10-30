@@ -5,11 +5,18 @@ import sys
 import numpy as np
 import itertools
 from sklearn.svm import LinearSVC
+from sklearn.kernel_approximation import RBFSampler
 
-BATCH_SIZE = 5000
+# make quickrun fails if this number is smaller than
+# the training_sub.txt line count
+BATCH_SIZE = 100
+N_FEATURES = 400
+
+rbf_feature = RBFSampler(gamma=1, random_state=1, n_components=1000)
+rbf_feature.fit(np.zeros(N_FEATURES).ravel())
 
 def transform(x_original):
-    return x_original
+    return rbf_feature.transform(x_original).ravel()
 
 def lines():
     for line in sys.stdin:

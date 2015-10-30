@@ -5,7 +5,7 @@ run: data/weights.txt data/split_test.txt
 		data/split_test.txt .
 
 data/mapped_out.txt: mapper.py data/split_train.txt
-	python mapper.py < data/split_train.txt | sort > data/mapped_out.txt
+	python mapper.py < data/split_train.txt > data/mapped_out.txt
 
 data/weights.txt: reducer.py data/mapped_out.txt
 	python reducer.py < data/mapped_out.txt > data/weights.txt

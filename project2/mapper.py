@@ -5,11 +5,21 @@ import sys
 import numpy as np
 import itertools
 from sklearn.svm import LinearSVC
+from sklearn.kernel_approximation import RBFSampler
+from sklearn.kernel_approximation import AdditiveChi2Sampler
 
-BATCH_SIZE = 5000
+BATCH_SIZE = 30000
+N_FEATURES = 400
+
+chi = AdditiveChi2Sampler()
+chi.fit(np.zeros(N_FEATURES).ravel())
+rbf = RBFSampler(gamma=1, n_components=6000)
+rbf.fit(np.zeros(1200).ravel())
 
 def transform(x_original):
-    return x_original
+    return chi.transform(x_original)
+    return rbf.transform(chi.transform(x_original)).ravel()
+    return rbf.transform(chi.transform(x_original)).ravel()
 
 def lines():
     for line in sys.stdin:

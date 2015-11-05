@@ -13,7 +13,7 @@ N_FEATURES = 400
 
 chi = AdditiveChi2Sampler()
 chi.fit(np.zeros(N_FEATURES).ravel())
-rbf = RBFSampler(gamma=1, random_state=1337, n_components=4000)
+rbf = RBFSampler(gamma=1, random_state=1337, n_components=4500)
 rbf.fit(np.zeros(1200).ravel())
 
 def transform(x_original):

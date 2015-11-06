@@ -11,7 +11,7 @@ N_FEATURES = 400
 
 chi = AdditiveChi2Sampler()
 chi.fit(np.zeros(N_FEATURES).ravel())
-rbf = RBFSampler(gamma=1, random_state=1337, n_components=6500)
+rbf = RBFSampler(gamma=1, random_state=1337, n_components=5500)
 rbf.fit(np.zeros(N_FEATURES * 3).ravel())
 
 def transform(x_original):
@@ -28,6 +28,8 @@ def main():
     clf = LinearSVC(
         fit_intercept=False,
         loss='squared_hinge',
+        # loss='hinge',
+        # C=2.0,
     )
     clf.fit(X, Y)
     np.savetxt(sys.stdout, clf.coef_)

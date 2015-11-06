@@ -1,8 +1,10 @@
 .PHONY: run map quicktest
 
 run: data/weights.txt data/split_test.txt
+	# python evaluate.py data/weights.txt \
+	# 	data/split_test.txt .
 	python evaluate.py data/weights.txt \
-		data/split_test.txt .
+		visual_test/visual_test_set.csv visual_test/target.csv .
 
 data/mapped_out.txt: mapper.py data/split_train.txt
 	head -n 5000 data/split_train.txt | python mapper.py > data/mapped_out.txt

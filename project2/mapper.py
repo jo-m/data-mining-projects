@@ -27,8 +27,8 @@ def main():
     X, Y = load_data()
     clf = LinearSVC(
         fit_intercept=False,
-        loss='squared_hinge',
-        # loss='hinge',
+        # loss='squared_hinge',
+        loss='hinge',
         # C=2.0,
     )
     clf.fit(X, Y)

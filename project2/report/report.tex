@@ -33,6 +33,9 @@ Prof. Krause has hinted, that explicit feature mapping to higher dimensions migh
 Marco went on to further experiment with that setting by tuning hyperparameters. He also calculated the mean and standard deviation of the dataset and normalized the features in the transform function. Further experimentation included using other linear models like SGDClassifier and tuning those hyperparameters. Unfortunately, none of the experiments lead to a significantly better score.
 
 By inspecting the scikit-learn API documentation closer, Jonathan found that AdditiveChi2Sampler can be used in combination with the RBFSampler. That gave us an immediate boost in score to over 0.81. Further tuning the hyperparameters lead to a final score of 0.83081.
+
+Daniel could also not help to get a better score. One possibility to get better result lays in increasing the number of components of the RBFSampler, but this was not possible because we then run into a timeout.
+
 \end{document}
 
 %%% Local Variables:

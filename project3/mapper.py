@@ -47,7 +47,7 @@ def recalc_centers(clusters, cluster_id, new_point):
     # not so naive approach
     nb_points = clusters[cluster_id]['nb_points']
     center = clusters[cluster_id]['center']
-    mean = center + float(1/nb_points) * (new_point - center)
+    mean = center + float(1)/nb_points * (new_point - center)
     clusters[cluster_id]['center'] = mean
 
     return clusters

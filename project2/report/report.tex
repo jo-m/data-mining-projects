@@ -25,8 +25,17 @@
 \maketitle
 
 \section*{Large Scale Image Classification}
-Briefly describe the steps used to produce the solution. Feel free to add plots or screenshots if you think it's necessary. The report should contain a maximum of 2 pages.
-Keep in mind that you only have to submit one report per group. Please indicate the contribution of each group member to the project.
+We started by closely following the techniques and algorithms described in the lecture and tutorial sessions. As required, Python 2.7, numpy as well as scikit-learn were used.
+Jonathan started out again by establishing a solid code base, which allowed us to easily experiment with the given dataset. He went on to train a linear support vector machine in the mapper, then emitting the weights. On the reducer side, the mean of all emitted weights were calculated and saved. That already gave us a fair score of 0.73744.
+
+Prof. Krause has hinted, that explicit feature mapping to higher dimensions might be useful for the project. With that in mind, we found the kernel approximation API's in scikit-learn. We have then only experimented with the RBFSampler, since other kernel approximations like Nystroem needed to be fitted to training data before doing a transformation. That, however, wouldn't work since the transform function in the mapper was used in the evaluation script.
+
+Marco went on to further experiment with that setting by tuning hyperparameters. He also calculated the mean and standard deviation of the dataset and normalized the features in the transform function. Further experimentation included using other linear models like SGDClassifier and tuning those hyperparameters. Unfortunately, none of the experiments lead to a significantly better score.
+
+By inspecting the scikit-learn API documentation closer, Jonathan found that AdditiveChi2Sampler can be used in combination with the RBFSampler. That gave us an immediate boost in score to over 0.81. Further tuning the hyperparameters lead to a final score of 0.83081.
+
+Daniel could also not help to get a better score. One possibility to get better result lays in increasing the number of components of the RBFSampler, but this was not possible because we then run into a timeout.
+
 \end{document}
 
 %%% Local Variables:

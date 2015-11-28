@@ -8,13 +8,17 @@ from sklearn.metrics.pairwise import pairwise_distances
 pycharm_mode = False
 
 
-def init_cluster_centers(k=100):
+def init_cluster_centers(points, k=100):
     clusters = {}
     for i in range(k):
-        clusters[i] = {'center': [], 'nb_points': 0}
+        clusters[i] = {'center': [], 'nb_points': 0, 'points': []}
 
-    for v in clusters.itervalues():
-        v['center'] = np.random.random_sample(size=(500,))
+    # pick random points as centers
+    points_index = range(len(points))
+    np.random.shuffle(points_index)
+
+    for cluster_i, point_i in enumerate(points_index[:k]):
+        clusters[cluster_i]['center'] = points[point_i]
 
     return clusters
 
@@ -28,7 +32,7 @@ def assign_cluster_id(clusters, new_point):
     cluster_id = np.argmin(distances)
 
     # naive approach
-    # clusters[cluster_id]['points'] += [new_point]
+    #clusters[cluster_id]['points'] += [new_point]
 
     # not so naive approach
     clusters[cluster_id]['nb_points'] += 1
@@ -38,7 +42,7 @@ def assign_cluster_id(clusters, new_point):
 
 def recalc_centers(clusters, cluster_id, new_point):
     # naive approach
-    # mean = np.mean(clusters[cluster_id]['points'], axis=0)
+    #mean = np.mean(clusters[cluster_id]['points'], axis=0)
 
     # not so naive approach
     nb_points = clusters[cluster_id]['nb_points']
@@ -57,16 +61,30 @@ def print_centers(clusters, output):
 
 
 def process(input, output):
-    clusters = init_cluster_centers()
+    points = []
 
     for line in input:
         new_point = np.fromstring(line.strip(), sep=" ")
+        points += [new_point]
 
-        # assign to cluster
-        clusters, cluster_id = assign_cluster_id(clusters, new_point)
+    clusters = init_cluster_centers(points)
 
-        # recalculate center
-        clusters = recalc_centers(clusters, cluster_id, new_point)
+    for i in range(10):
+        points_index = range(len(points))
+        np.random.shuffle(points_index)
+
+        for point_i in points_index:
+            point = points[point_i]
+
+            # assign to cluster
+            clusters, cluster_id = assign_cluster_id(clusters, point)
+
+            # recalculate center
+            clusters = recalc_centers(clusters, cluster_id, point)
+
+        # reset point assignment to zero
+        for cluster_id in clusters.iterkeys():
+            clusters[cluster_id]['nb_points'] = 0
 
     print_centers(clusters, output)
 

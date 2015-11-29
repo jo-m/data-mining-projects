@@ -1,0 +1,95 @@
+# with n = 12500, we have exactly 8 jobs so we can use all our CPUs
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=80 n_init=10 max_iter=300
+n_clusters=80 n_init=10 max_iter=300
+n_clusters=80 n_init=10 max_iter=300
+n_clusters=80 n_init=10 max_iter=300
+n_clusters=80 n_init=10 max_iter=300
+n_clusters=80 n_init=10 max_iter=300
+n_clusters=80 n_init=10 max_iter=300
+n_clusters=80 n_init=10 max_iter=300
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+python evaluate.py data/centers.txt data/train.txt
+11.37248
+--------------------------
+# with n = 12500, we have exactly 8 jobs so we can use all our CPUs
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=100 n_init=10 max_iter=300
+n_clusters=100 n_init=10 max_iter=300
+n_clusters=100 n_init=10 max_iter=300
+n_clusters=100 n_init=10 max_iter=300
+n_clusters=100 n_init=10 max_iter=300
+n_clusters=100 n_init=10 max_iter=300
+n_clusters=100 n_init=10 max_iter=300
+n_clusters=100 n_init=10 max_iter=300
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+python evaluate.py data/centers.txt data/train.txt
+12.87217
+--------------------------
+# with n = 12500, we have exactly 8 jobs so we can use all our CPUs
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=120 n_init=10 max_iter=300
+n_clusters=120 n_init=10 max_iter=300
+n_clusters=120 n_init=10 max_iter=300
+n_clusters=120 n_init=10 max_iter=300
+n_clusters=120 n_init=10 max_iter=300
+n_clusters=120 n_init=10 max_iter=300
+n_clusters=120 n_init=10 max_iter=300
+n_clusters=120 n_init=10 max_iter=300
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+python evaluate.py data/centers.txt data/train.txt
+12.88906
+--------------------------
+# with n = 12500, we have exactly 8 jobs so we can use all our CPUs
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=150 n_init=10 max_iter=300
+n_clusters=150 n_init=10 max_iter=300
+n_clusters=150 n_init=10 max_iter=300
+n_clusters=150 n_init=10 max_iter=300
+n_clusters=150 n_init=10 max_iter=300
+n_clusters=150 n_init=10 max_iter=300
+n_clusters=150 n_init=10 max_iter=300
+n_clusters=150 n_init=10 max_iter=300
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+python evaluate.py data/centers.txt data/train.txt
+11.41949
+--------------------------
+# with n = 12500, we have exactly 8 jobs so we can use all our CPUs
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=200 n_init=10 max_iter=300
+n_clusters=200 n_init=10 max_iter=300
+n_clusters=200 n_init=10 max_iter=300
+n_clusters=200 n_init=10 max_iter=300
+n_clusters=200 n_init=10 max_iter=300
+n_clusters=200 n_init=10 max_iter=300
+n_clusters=200 n_init=10 max_iter=300
+n_clusters=200 n_init=10 max_iter=300
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+python evaluate.py data/centers.txt data/train.txt
+10.46211
+--------------------------

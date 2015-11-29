@@ -5,8 +5,8 @@ eval: data/centers.txt data/train.txt
 	python evaluate.py data/centers.txt data/train.txt
 
 # do map
+# with n = 12500, we have exactly 8 jobs so we can use all our CPUs
 data/for_reducer.txt: mapper.py
-	# with n = 12500, we have exactly 8 jobs so we can use all our CPUs
 	parallel --pipe -N12500 --blocksize 100M \
 		python mapper.py \
 		< data/train.txt \

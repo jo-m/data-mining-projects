@@ -1,8 +1,4 @@
-.PHONY: test_map eval eval_sub run map
-
-# just test the mapper for errors
-test_map:
-	head -n 100 data/train.txt | python mapper.py
+.PHONY: test_map eval run
 
 # evaluate on full data set
 eval: data/centers.txt data/train.txt
@@ -22,9 +18,11 @@ data/for_reducer.txt: mapper.py
 		< data/train.txt \
 		> data/for_reducer.txt
 
-# do map
-map: data/for_reducer.txt
-	cat data/for_reducer.txt
+	# test with less data
+	# head -n 800  data/train.txt | \
+	# parallel --pipe -N100 --blocksize 100M \
+	# 	python mapper.py \
+	# 	> data/for_reducer.txt
 
 # do reduce
 data/centers.txt: data/for_reducer.txt reducer.py

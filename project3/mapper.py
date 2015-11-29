@@ -6,7 +6,7 @@ import os
 import sys
 from sklearn.cluster import KMeans
 
-n_clusters = int(os.environ.get('mapper__n_clusters', '100'))
+n_clusters = int(os.environ.get('mapper__n_clusters', '400'))
 n_init = int(os.environ.get('mapper__n_init', '10'))
 max_iter = int(os.environ.get('mapper__n_init', '300'))
 

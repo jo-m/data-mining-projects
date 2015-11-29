@@ -16,7 +16,8 @@ eval_sub: data/centers.txt
 
 # do map
 data/for_reducer.txt: mapper.py
-	parallel --pipe -N12500 --blocksize 69M \
+	# with n = 12500, we have exactly 8 jobs so we can use all our CPUs
+	parallel --pipe -N12500 --blocksize 100M \
 		python mapper.py \
 		< data/train.txt \
 		> data/for_reducer.txt

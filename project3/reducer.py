@@ -2,115 +2,18 @@
 # IMPORTANT: leave the above line as is.
 
 import sys
-import os
 import numpy as np
-import scipy.spatial.distance as spd
-from sklearn.metrics.pairwise import pairwise_distances
+from sklearn.cluster import KMeans
 
-pycharm_mode = os.environ.get('PYCHARM_MODE')
+k = KMeans(n_clusters=100,
+           init='k-means++',
+           n_init=10,
+           max_iter=300,
+           tol=0.0001,
+           copy_x=False)
 
+X = np.loadtxt(sys.stdin)
 
-def init_cluster_centers(points=None, k=100, method=None, point_length=0):
-    cluster_centers = np.zeros(shape=(k, point_length))
-    cluster_nb_points = np.zeros(shape=(k,), dtype=np.int)
+k.fit(X)
 
-    if points is not None:
-        if method == 'km++':
-            # Choose first center uniformly at random
-            centers = np.array(points[np.random.choice(points.shape[0]), :], ndmin=2)
-
-            # Choose next centers weighted by squared distance
-            for i in range(1, k):
-                ds = spd.cdist(centers, points, 'sqeuclidean')
-                mindist = np.min(ds, axis=0).flatten()
-                idx = np.random.choice(points.shape[0], p=mindist/np.sum(mindist))
-                centers = np.vstack((centers, points[idx, :]))
-
-            cluster_centers = centers
-            cluster_nb_points = np.ones(shape=(k,), dtype=np.int)
-        elif method == 'rand':
-            # pick random points as centers
-            points_index = range(len(points))
-            np.random.shuffle(points_index)
-
-            for cluster_i, point_i in enumerate(points_index[:k]):
-                cluster_centers[cluster_i] = points[point_i]
-    elif method == 'rand':
-        cluster_centers = np.random.random_sample(size=(k, point_length))
-
-    return cluster_centers, cluster_nb_points
-
-
-def assign_cluster_id(cluster_centers, cluster_nb_points, new_point):
-    distances = pairwise_distances(new_point, cluster_centers, metric='sqeuclidean')
-    cluster_id = np.argmin(distances)
-    cluster_nb_points[cluster_id] += 1
-
-    return cluster_centers, cluster_nb_points, cluster_id
-
-
-def recalc_center(cluster_centers, cluster_nb_points, cluster_id, new_point):
-    nb_points = cluster_nb_points[cluster_id]
-    center = cluster_centers[cluster_id]
-    new_center = center + float(1)/nb_points * (new_point - center)
-    cluster_centers[cluster_id] = new_center
-
-    return cluster_centers
-
-
-def print_centers(cluster_centers, output):
-    for center in cluster_centers:
-        # print('{} '.format(cluster_id)),
-        np.savetxt(output, center, newline=" ")
-        print # prints new line
-
-
-def process(input, output):
-    k = 100
-    point_length = 500
-    points = None
-
-    for line in input:
-        new_point = np.fromstring(line.strip(), sep=" ")
-
-        if points is not None:
-            points = np.vstack((points, new_point))
-        else:
-            points = np.array(new_point, ndmin=2)
-
-    cluster_centers, cluster_nb_points = init_cluster_centers(points=points, k=k, point_length=point_length, method='km++')
-
-    for i in range(1):
-        points_index = range(len(points))
-        np.random.shuffle(points_index)
-
-        for point_i in points_index:
-            point = points[point_i]
-
-            # assign to cluster
-            cluster_centers, cluster_nb_points, cluster_id = assign_cluster_id(cluster_centers, cluster_nb_points, point)
-
-            # recalculate center
-            cluster_centers = recalc_center(cluster_centers, cluster_nb_points, cluster_id, point)
-
-        # reset point assignment to zero
-        cluster_nb_points = np.zeros_like(cluster_nb_points)
-
-    print_centers(cluster_centers, output)
-
-
-if __name__ == "__main__":
-    if pycharm_mode:
-        import argparse
-
-        parser = argparse.ArgumentParser()
-        parser.add_argument("--input", help="The filename to be processed", required=True)
-        parser.add_argument("--output", help="The filename to be written to")
-        args = parser.parse_args()
-        if args.input:
-            with open(args.input) as f:
-                process(f, args.output if args.output else sys.stdout)
-                f.close()
-
-    else:
-        process(sys.stdin, sys.stdout)
+np.savetxt(sys.stdout, k.cluster_centers_)

@@ -7,7 +7,7 @@ from sklearn.cluster import KMeans
 
 k = KMeans(n_clusters=100,
            init='k-means++',
-           n_init=20,
+           n_init=10,
            copy_x=False)
 
 X = np.loadtxt(sys.stdin)

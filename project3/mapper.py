@@ -17,6 +17,3 @@ X = np.loadtxt(sys.stdin)
 k.fit(X)
 
 np.savetxt(sys.stdout, k.cluster_centers_)
-#
-# sys.stderr.write('fitted a set...\n')
-# sys.stderr.flush()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-score = 10.73896
+score = 9.50687
 
 easy = 13.93828
 hard = 9.01981

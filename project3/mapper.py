@@ -2,23 +2,43 @@
 # IMPORTANT: leave the above line as is.
 
 import sys
+import os
 import numpy as np
+import scipy.spatial.distance as spd
 from sklearn.metrics.pairwise import pairwise_distances
 
-pycharm_mode = False
+pycharm_mode = os.environ.get('PYCHARM_MODE')
 
 
-def init_cluster_centers(points, k=100):
+def init_cluster_centers(points=None, k=100, method=None):
     clusters = {}
     for i in range(k):
-        clusters[i] = {'center': [], 'nb_points': 0, 'points': []}
+        clusters[i] = {'center': [], 'nb_points': 0}
 
-    # pick random points as centers
-    points_index = range(len(points))
-    np.random.shuffle(points_index)
+    if points is not None:
+        if method == 'km++':
+            # Choose first center uniformly at random
+            centers = np.array(points[np.random.choice(points.shape[0]), :], ndmin=2)
 
-    for cluster_i, point_i in enumerate(points_index[:k]):
-        clusters[cluster_i]['center'] = points[point_i]
+            # Choose next centers weighted by squared distance
+            for i in range(1, k):
+                ds = spd.cdist(centers, points, 'sqeuclidean')
+                mindist = np.min(ds, axis=0).flatten()
+                idx = np.random.choice(points.shape[0], p=mindist/np.sum(mindist))
+                centers = np.vstack((centers, points[idx, :]))
+
+            for k in clusters.iterkeys():
+                clusters[k]['center'] = centers[k]
+        elif method == 'rand':
+            # pick random points as centers
+            points_index = range(len(points))
+            np.random.shuffle(points_index)
+
+            for cluster_i, point_i in enumerate(points_index[:k]):
+                clusters[cluster_i]['center'] = points[point_i]
+    elif method == 'rand':
+        for v in clusters.itervalues():
+            v['center'] = np.random.random_sample(size=(500,))
 
     return clusters
 
@@ -31,24 +51,16 @@ def assign_cluster_id(clusters, new_point):
     distances = pairwise_distances(new_point, centers, metric='sqeuclidean')
     cluster_id = np.argmin(distances)
 
-    # naive approach
-    #clusters[cluster_id]['points'] += [new_point]
-
-    # not so naive approach
     clusters[cluster_id]['nb_points'] += 1
 
     return clusters, cluster_id
 
 
-def recalc_centers(clusters, cluster_id, new_point):
-    # naive approach
-    #mean = np.mean(clusters[cluster_id]['points'], axis=0)
-
-    # not so naive approach
+def recalc_center(clusters, cluster_id, new_point):
     nb_points = clusters[cluster_id]['nb_points']
     center = clusters[cluster_id]['center']
-    mean = center + float(1)/nb_points * (new_point - center)
-    clusters[cluster_id]['center'] = mean
+    new_center = center + float(1)/nb_points * (new_point - center)
+    clusters[cluster_id]['center'] = new_center
 
     return clusters
 
@@ -61,30 +73,21 @@ def print_centers(clusters, output):
 
 
 def process(input, output):
-    points = []
+    clusters = init_cluster_centers(k=1000)
 
-    for line in input:
+    for i, line in enumerate(input):
         new_point = np.fromstring(line.strip(), sep=" ")
-        points += [new_point]
 
-    clusters = init_cluster_centers(points)
-
-    for i in range(10):
-        points_index = range(len(points))
-        np.random.shuffle(points_index)
-
-        for point_i in points_index:
-            point = points[point_i]
-
+        # take the first k points as cluster centers
+        if i in clusters:
+            clusters[i]['center'] = new_point
+            clusters[i]['nb_points'] += 1
+        else:
             # assign to cluster
-            clusters, cluster_id = assign_cluster_id(clusters, point)
+            clusters, cluster_id = assign_cluster_id(clusters, new_point)
 
             # recalculate center
-            clusters = recalc_centers(clusters, cluster_id, point)
-
-        # reset point assignment to zero
-        for cluster_id in clusters.iterkeys():
-            clusters[cluster_id]['nb_points'] = 0
+            clusters = recalc_center(clusters, cluster_id, new_point)
 
     print_centers(clusters, output)
 

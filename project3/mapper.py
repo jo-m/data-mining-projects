@@ -19,7 +19,8 @@ k = KMeans(n_clusters=n_clusters,
            n_init=10,
            max_iter=max_iter,
            tol=0.0001,
-           copy_x=False)
+           copy_x=False,
+           n_jobs=4)
 
 X = np.loadtxt(sys.stdin)
 

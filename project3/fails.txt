@@ -21,3 +21,8 @@ k = MiniBatchKMeans(n_clusters=1000,
 k = KMeans(n_clusters=100,
            n_init=15,
            copy_x=False)
+
+3759 score=
+---------------
+k = MiniBatchKMeans(n_clusters=800, batch_size=700)
+k = KMeans(n_clusters=100, n_init=15, copy_x=False)

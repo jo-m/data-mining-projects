@@ -1,0 +1,395 @@
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	7m36.080s
+user	55m20.066s
+sys	0m56.548s
+python evaluate.py data/centers.txt data/train.txt
+10.15494
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+n_clusters=500 n_init=10
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	7m31.529s
+user	55m33.240s
+sys	0m56.320s
+python evaluate.py data/centers.txt data/train.txt
+9.83166
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	11m6.757s
+user	82m1.433s
+sys	1m21.143s
+python evaluate.py data/centers.txt data/train.txt
+9.64783
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+n_clusters=500 n_init=15
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	11m8.907s
+user	83m2.882s
+sys	1m19.960s
+python evaluate.py data/centers.txt data/train.txt
+9.83505
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	8m45.087s
+user	64m28.017s
+sys	1m2.448s
+python evaluate.py data/centers.txt data/train.txt
+9.38880
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+n_clusters=600 n_init=10
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	8m46.931s
+user	64m55.033s
+sys	1m3.240s
+python evaluate.py data/centers.txt data/train.txt
+9.65275
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	12m58.419s
+user	96m19.169s
+sys	1m31.121s
+python evaluate.py data/centers.txt data/train.txt
+9.79735
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+n_clusters=600 n_init=15
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	13m0.235s
+user	97m11.042s
+sys	1m31.940s
+python evaluate.py data/centers.txt data/train.txt
+9.67950
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	11m34.179s
+user	84m56.783s
+sys	1m18.616s
+python evaluate.py data/centers.txt data/train.txt
+9.53717
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+n_clusters=800 n_init=10
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	11m1.487s
+user	81m17.361s
+sys	1m13.726s
+python evaluate.py data/centers.txt data/train.txt
+9.41515
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	16m36.983s
+user	124m6.320s
+sys	1m52.804s
+python evaluate.py data/centers.txt data/train.txt
+9.31420
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+n_clusters=800 n_init=15
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	16m37.659s
+user	124m2.840s
+sys	1m52.293s
+python evaluate.py data/centers.txt data/train.txt
+9.31612
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	48m55.889s
+user	358m0.131s
+sys	0m56.855s
+python evaluate.py data/centers.txt data/train.txt
+9.36524
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+n_clusters=1000 n_init=10
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	46m57.311s
+user	342m56.174s
+sys	0m57.168s
+python evaluate.py data/centers.txt data/train.txt
+9.17919
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	68m10.343s
+user	510m30.698s
+sys	1m19.638s
+python evaluate.py data/centers.txt data/train.txt
+9.35803
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+n_clusters=1000 n_init=15
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	69m5.470s
+user	518m53.572s
+sys	1m20.952s
+python evaluate.py data/centers.txt data/train.txt
+9.34114
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	65m5.924s
+user	483m34.962s
+sys	1m17.389s
+python evaluate.py data/centers.txt data/train.txt
+9.14005
+--------------------------
+parallel --pipe -N12500 --blocksize 100M \
+		python mapper.py \
+		< data/train.txt \
+		> data/for_reducer.txt
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+n_clusters=1500 n_init=10
+python reducer.py \
+		< data/for_reducer.txt \
+		> data/centers.txt
+
+real	64m15.768s
+user	469m51.766s
+sys	1m17.428s
+python evaluate.py data/centers.txt data/train.txt
+9.14791

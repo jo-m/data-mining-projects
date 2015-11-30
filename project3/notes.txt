@@ -1,9 +1,0 @@
-running locally:
-
-commit 1483fb1
-time 13:03,59 total
-score 9.43365
-
-commit  8d38512
-time 1:54,62 total
-score 8.73130

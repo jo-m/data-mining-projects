@@ -11,7 +11,5 @@ k = KMeans(n_clusters=800,
            copy_x=False)
 
 X = np.loadtxt(sys.stdin)
-
 k.fit(X)
-
 np.savetxt(sys.stdout, k.cluster_centers_)

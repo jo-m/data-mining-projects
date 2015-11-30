@@ -1,11 +1,11 @@
 #!/local/anaconda/bin/python
 # IMPORTANT: leave the above line as is.
 
-import sys
 import numpy as np
-from sklearn.cluster import KMeans
+import sys
+from sklearn.cluster import MiniBatchKMeans
 
-k = KMeans(n_clusters=100, n_init=15, copy_x=False)
+k = MiniBatchKMeans(n_clusters=100, batch_size=700)
 X = np.loadtxt(sys.stdin)
 k.fit(X)
 np.savetxt(sys.stdout, k.cluster_centers_)

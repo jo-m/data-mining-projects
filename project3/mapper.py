@@ -5,7 +5,7 @@ import numpy as np
 import sys
 from sklearn.cluster import MiniBatchKMeans
 
-k = MiniBatchKMeans(n_clusters=1000, batch_size=1500)
+k = MiniBatchKMeans(n_clusters=700, batch_size=700)
 X = np.loadtxt(sys.stdin)
 k.fit(X)
 np.savetxt(sys.stdout, k.cluster_centers_)

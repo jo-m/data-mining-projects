@@ -34,7 +34,7 @@ After some success with this method we changed to MiniBatchKMeans. This speeded 
 
 The final issue was now to fine-tune the parameters such as size of mini-batches, and the number of clusters for the mapper and reducer. Therefore Jonathan implemented grid search to be executed on Euler Cluster, one the supercomputers at ETH Zurich. It turned out that batch sizes of 700 and 700 clusters for the mapper (and of course 100 clusters for the reducer) optimized our score.
 
-It's noteworthy to tell the our final submission has a very high variance. The exactly same code led to our final score  of 8.60131 in the best case, but only to  XXX in the worst case.
+It's noteworthy to tell the our final submission has a very high variance. The exactly same code led to our final score  of 8.60131 in the best case (submission 3722), but only to  9.94975 (sumbission 3780) in the worst case.
 
 Daniel checked the lecture slides as well as the the web without finding any room for improvement and wrote the report.
 

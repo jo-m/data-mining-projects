@@ -1,0 +1,46 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[pdftex]{hyperref}
+
+% Lengths and indenting
+\setlength{\textwidth}{16.5cm}
+\setlength{\marginparwidth}{1.5cm}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{0.15cm}
+\setlength{\textheight}{22cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{\oddsidemargin}
+\setlength{\topmargin}{0cm}
+\setlength{\headheight}{0cm}
+\setlength{\headsep}{0cm}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{Data Mining: Learning from Large Data Sets - Fall Semester 2015}
+\author{jo@student.ethz.ch\\ umarco@student.ethz.ch\\ meiled@student.ethz.ch\\}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Extracting Representative Elements}
+
+Marco started out by implementing the k-means algorithm by hand, not leading to any satisfying results.
+
+Jonathans attempt was to use K-Means clustering out of the sklearn.cluster module as follows: In the first step a set of mappers create a set of cluster centers each. In the second part, all these cluster centers are reduced to the 100 cluster centers as asked in the project description. In our test environment we used 8 mappers and one reducer. 
+
+After some success with this method we changed to MiniBatchKMeans. This speeded up the computation, and even led to better results.
+
+The final issue was now to fine-tune the parameters such as size of mini-batches, and the number of clusters for the mapper and reducer. Therefore Jonathan implemented grid search to be executed on Euler Cluster, one the supercomputers at ETH Zurich. It turned out that batch sizes of 700 and 700 clusters for the mapper (and of course 100 clusters for the reducer) optimized our score.
+
+It's noteworthy to tell the our final submission has a very high variance. The exactly same code led to our final score  of 8.60131 in the best case, but only to  XXX in the worst case.
+
+Daniel checked the lecture slides as well as the the web without finding any room for improvement and wrote the report.
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

@@ -3,33 +3,28 @@ import random
 from collections import defaultdict
 
 """
-ids:      n * 1 vector, article ids
-articles: n * 6 matrix, article features
 st: (M, b) tuple for each article as a dict (key : article id)
 al: parameter alpha
 last_recommended: set by reccomend so `update` knows what article/user state to update for
 """
-ids, articles = None, None
 st = None
 al = 1
 last_recommended = None
+user_ndim = 6
 
 def set_articles(articles_):
-    global ids, articles, st, al, last_recommended
-    ids = np.array([a[0] for a in articles_])
-    articles = np.array([a[1:] for a in articles_])
-    article_n_features = articles.shape[1]
+    global st, al, last_recommended, user_ndim
     # tuples M, b
     st = defaultdict(lambda: (
-        np.eye(article_n_features),
-        np.zeros(article_n_features)
+        np.eye(user_ndim),
+        np.zeros(user_ndim)
     ))
 
 """
 y: reward (-1: ignore, 1: click, 0: noclick)
 """
 def update(y):
-    global ids, articles, st, al, last_recommended
+    global st, al, last_recommended, user_ndim
     if y == -1:
         return
     a, z = last_recommended
@@ -39,14 +34,13 @@ def update(y):
     b = b + y * z
     st[a] = (M, b)
 
-
 """
 time: int, not sequential
 z: 1 * 6 vector, user feature
 articles_list: list of article ids to choose from, len ~20
 """
 def reccomend(time, z, articles_list):
-    global ids, articles, st, al, last_recommended
+    global st, al, last_recommended, user_ndim
     z = np.array(z)
     ucb = np.zeros(len(articles_list))
     for i, a in enumerate(articles_list):

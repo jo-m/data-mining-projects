@@ -6,16 +6,16 @@ from collections import defaultdict
 ids:      n * 1 vector, article ids
 articles: n * 6 matrix, article features
 st: (M, b) tuple for each article as a dict (key : article id)
-a: parameter alpha
+al: parameter alpha
 last_recommended: set by reccomend so `update` knows what article/user state to update for
 """
 ids, articles = None, None
 st = None
-a = 1
+al = 1
 last_recommended = None
 
 def set_articles(articles_):
-    global ids, articles, st, last_recommended
+    global ids, articles, st, al, last_recommended
     ids = np.array([a[0] for a in articles_])
     articles = np.array([a[1:] for a in articles_])
     article_n_features = articles.shape[1]
@@ -29,7 +29,7 @@ def set_articles(articles_):
 y: reward (-1: ignore, 1: click, 0: noclick)
 """
 def update(y):
-    global ids, articles, st, last_recommended
+    global ids, articles, st, al, last_recommended
     if y == -1:
         return
     a, z = last_recommended
@@ -46,14 +46,14 @@ z: 1 * 6 vector, user feature
 articles_list: list of article ids to choose from, len ~20
 """
 def reccomend(time, z, articles_list):
-    global ids, articles, st, last_recommended
+    global ids, articles, st, al, last_recommended
     z = np.array(z)
     ucb = np.zeros(len(articles_list))
     for i, a in enumerate(articles_list):
         M, b = st[a]
         M_inv = np.linalg.inv(M)
         w = M_inv.dot(b)
-        ucb[i] = np.dot(w, z) + a * np.sqrt(np.dot(z, np.dot(M_inv, z)))
+        ucb[i] = np.dot(w, z) + al * np.sqrt(np.dot(z, np.dot(M_inv, z)))
     last_recommended = (articles_list[np.argmax(ucb)], z)
     return last_recommended[0]
 

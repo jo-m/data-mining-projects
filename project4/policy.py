@@ -6,6 +6,5 @@ def set_articles(articles):
 def update(reward):
     pass
 
-def recommend(time, user_features, articles):
+def reccomend(time, user_features, articles):
     return numpy.random.choice(articles, size=1)
-

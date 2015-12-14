@@ -11,7 +11,7 @@ ARTICLES = defaultdict(lambda: (
 ))
 LAST_RECOMMENDED = None
 LAST_USER = None
-ALPHA = 0.15
+ALPHA = 0.25
 MODIFIED_M, MODIFIED_B = set(), set()
 
 def set_articles(articles):

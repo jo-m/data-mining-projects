@@ -39,9 +39,10 @@ def reccomend(_, z, articles_list):
 
 def ucb(article_id):
     global LAST_USER, LAST_USER_NORM, MODIFIED_M, MODIFIED_B
+    z = LAST_USER
     if not article_id in MODIFIED_M:
         return ALPHA * LAST_USER_NORM
     _, M_inv, _, w = ARTICLES[article_id]
     if not article_id in MODIFIED_B:
-        return ALPHA * np.sqrt(z.dot(M_inv.dot(LAST_USER)))
-    return np.dot(w, LAST_USER) + ALPHA * np.sqrt(z.dot(M_inv.dot(z)))
+        return ALPHA * np.sqrt(z.dot(M_inv.dot(z)))
+    return np.dot(w, z) + ALPHA * np.sqrt(z.dot(M_inv.dot(z)))

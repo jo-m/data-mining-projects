@@ -2,6 +2,10 @@
 \usepackage{graphicx}
 \graphicspath{ {img/} }
 \usepackage{amsmath}
+\usepackage{pgfplots}
+\usepgfplotslibrary{external}
+\tikzexternalize
+\pgfplotsset{width=10cm,compat=1.9}
 \usepackage[pdftex]{hyperref}
 
 % Lengths and indenting
@@ -82,14 +86,49 @@ We decided to go for the LinUCB Algorithm implementation as discussed on slide 3
 \begin{center}
 \setlength{\fboxsep}{0pt}%
 \setlength{\fboxrule}{1pt}%
-\fbox{\includegraphics[width=10cm]{LinUCB_slide.png}}%
+\fbox{\includegraphics[width=8cm]{LinUCB_slide.png}}%
 
 \caption{LinUCB, Slide 38 of lecture 11}
 \label{default}
 \end{center}
 \end{figure}
 
-Even though we're disregarding the timestamp we managed to get about the hard-baseline by testing different values for alpha.
+Even though we're disregarding the timestamp and article features at all, we managed to get over the hard-baseline by testing different values for $\alpha$. It seems pretty random. All our submissions did run for approximately ten minutes.
+
+\begin{figure}[htbp]
+\begin{center}
+\fbox{
+\begin{tikzpicture}[scale = 0.8]
+\begin{axis}[
+    /pgf/number format/.cd,
+        use comma,
+        1000 sep={},
+        ylabel=score,
+        xlabel=$\alpha$]
+\addplot 
+	coordinates {(0.125,0.06505)
+(0.150,0.06464)
+(0.175,0.065674)
+(0.200,0.066082)
+(0.200,0.065004)
+(0.225,0.065569)
+(0.250,0.063253)
+(0.275,0.065004)
+(0.300,0.063199)
+(0.325,0.065707)
+(0.350,0.062058)};
+
+\legend{Submissions}
+\end{axis}
+\end{tikzpicture}
+
+}%
+
+\caption{Score vs. $\alpha$ in different submissions}
+\label{default}
+\end{center}
+\end{figure}
+
 
 
 \end{document}

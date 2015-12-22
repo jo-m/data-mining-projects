@@ -93,7 +93,11 @@ We decided to go for the LinUCB Algorithm implementation as discussed on slide 3
 \end{center}
 \end{figure}
 
-Even though we're disregarding the timestamp and article features at all, we managed to get over the hard-baseline by testing different values for $\alpha$. It seems pretty random. All our submissions did run for approximately ten minutes.
+After some initial implementation specific issues (wrong format of the "set\_articles" function parameter) and a timeout on the server, our implementation worked.
+
+Closely following the algorithm description on the slides, we entirely disregard the article features and the timestamp parameter. We managed to get over the hard-baseline by testing different values for $\alpha$. As long as $\alpha$ is chosen between 1.5 and 2.5, the score bounces randomly in the range around the hard baseline. All our submissions did run for approximately ten minutes.
+
+Notable things from our implementation are the (necessary) use of global Python variables to keep state between function calls, and the use of a defaultdict.
 
 \begin{figure}[htbp]
 \begin{center}

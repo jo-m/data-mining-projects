@@ -1,41 +1,37 @@
 import numpy as np
-from collections import defaultdict
+import collections
 
-user_ndim = 6
 # tuple (M, M_inv, b, w)
-ARTICLES = defaultdict(lambda: (
-    np.eye(user_ndim),
-    np.eye(user_ndim),
-    np.zeros(user_ndim),
-    np.zeros(user_ndim),
+ARTICLES = collections.defaultdict(lambda: (
+    np.eye(6),
+    np.eye(6),
+    np.zeros(6),
+    np.zeros(6),
 ))
-LAST_RECOMMENDED = None
-LAST_USER = None
-ALPHA = 0.275
+LAST = None
+ALPHA = 0.3125
 
 def set_articles(articles):
     pass
 
 def update(reward):
-    global ARTICLES, LAST_RECOMMENDED, LAST_USER
     if reward < 0:
         return
-    M, _, b, _ = ARTICLES[LAST_RECOMMENDED]
-    M += np.outer(LAST_USER, LAST_USER)
+    a, z = LAST
+    M, _, b, _ = ARTICLES[a]
+    M += np.outer(z, z)
     M_inv = np.linalg.inv(M)
     if reward == 1:
-        b += LAST_USER
+        b += z
     w = M_inv.dot(b)
-    ARTICLES[LAST_RECOMMENDED] = (M, M_inv, b, w)
+    ARTICLES[a] = (M, M_inv, b, w)
 
-def reccomend(_, z, articles_list):
-    global ARTICLES, LAST_RECOMMENDED, LAST_USER
-    LAST_USER = np.array(z)
-    LAST_RECOMMENDED = max(articles_list, key=ucb)
-    return LAST_RECOMMENDED
+def reccomend(_, z, articles):
+    global LAST
+    z = np.array(z)
+    LAST = (max(articles, key=lambda k: ucb(k, z)), z)
+    return LAST[0]
 
-def ucb(article_id):
-    global LAST_USER
-    z = LAST_USER
+def ucb(article_id, z):
     _, M_inv, _, w = ARTICLES[article_id]
     return np.dot(w, z) + ALPHA * np.sqrt(z.dot(M_inv.dot(z)))
